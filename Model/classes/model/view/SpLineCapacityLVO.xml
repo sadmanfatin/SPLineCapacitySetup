@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="SpLineCapacityLVO"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true"
+  SelectList="SpLineCapacityLEO.CAPACITY_L_ID, 
+       SpLineCapacityLEO.ORG_ID, 
+       SpLineCapacityLEO.DATE_VAL, 
+       SpLineCapacityLEO.LINE_NO, 
+       SpLineCapacityLEO.WORKING_HOUR, 
+       SpLineCapacityLEO.MONTH_SERIAL, 
+       SpLineCapacityLEO.LAST_UPDATED_BY, 
+       SpLineCapacityLEO.LAST_UPDATED_DATE"
+  FromList="SP_LINE_CAPACITY_L SpLineCapacityLEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|VarAccess"/>
+  </DesignTime>
+  <EntityUsage
+    Name="SpLineCapacityLEO"
+    Entity="model.entity.SpLineCapacityLEO"/>
+  <ViewAttribute
+    Name="CapacityLId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="CapacityLId"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="CAPACITY_L_ID"/>
+  <ViewAttribute
+    Name="OrgId"
+    PrecisionRule="true"
+    EntityAttrName="OrgId"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="ORG_ID"/>
+  <ViewAttribute
+    Name="DateVal"
+    PrecisionRule="true"
+    EntityAttrName="DateVal"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="DATE_VAL"/>
+  <ViewAttribute
+    Name="LineNo"
+    PrecisionRule="true"
+    EntityAttrName="LineNo"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="LINE_NO"/>
+  <ViewAttribute
+    Name="WorkingHour"
+    PrecisionRule="true"
+    EntityAttrName="WorkingHour"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="WORKING_HOUR"/>
+  <ViewAttribute
+    Name="MonthSerial"
+    PrecisionRule="true"
+    EntityAttrName="MonthSerial"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="MONTH_SERIAL"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="SpLineCapacityLEO"
+    AliasName="LAST_UPDATED_DATE"/>
+</ViewObject>

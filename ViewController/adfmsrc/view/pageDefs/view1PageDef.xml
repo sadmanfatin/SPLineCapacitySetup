@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.62.29" id="view1PageDef"
+                Package="view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="OrgVO1" RangeSize="25" DataControl="AppModuleDataControl"
+              id="OrgVO1Iterator"/>
+    <invokeAction id="setSessionValue" Binds="setSessionValues"
+                  Refresh="always"/>
+    <iterator Binds="SpLineDefaultWhVO1" RangeSize="25"
+              DataControl="AppModuleDataControl"
+              id="SpLineDefaultWhVO1Iterator"/>
+    <iterator Binds="SpLineCapacityHVO1" RangeSize="25"
+              DataControl="AppModuleDataControl"
+              id="SpLineCapacityHVO1Iterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="OrgVO1Iterator" id="OrgName">
+      <AttrNames>
+        <Item Value="OrgName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OrgVO1Iterator" id="OrgId">
+      <AttrNames>
+        <Item Value="OrgId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="setSessionValues"
+                  InstanceName="AppModuleDataControl.dataProvider"
+                  DataControl="AppModuleDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setSessionValues"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="orgId" NDValue="#{viewScope.OrgId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="userId" NDValue="#{viewScope.UserId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="respId" NDValue="#{viewScope.RespId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="respApplId" NDValue="#{viewScope.RespApplId}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="SpLineDefaultWhVO1Iterator"
+                     id="DefaultWorkingHour">
+      <AttrNames>
+        <Item Value="DefaultWorkingHour"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="SpLineCapacityHVO1Iterator" id="SpLineCapacityHVO1">
+      <nodeDefinition DefName="model.view.SpLineCapacityHVO"
+                      Name="SpLineCapacityHVO10">
+        <AttrNames>
+          <Item Value="CapacityHId"/>
+          <Item Value="OrgId"/>
+          <Item Value="NoOfLine"/>
+          <Item Value="EffStartDate"/>
+          <Item Value="EffEndDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="SpLineCapacityHVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="SpLineCapacityHVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction"
+            DataControl="AppModuleDataControl"/>
+  </bindings>
+</pageDefinition>
