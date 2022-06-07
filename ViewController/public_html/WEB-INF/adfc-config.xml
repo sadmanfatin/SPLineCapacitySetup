@@ -19,4 +19,9 @@
       <to-value>#{viewScope.RespAppId}</to-value>
     </input-page-parameter>
   </view>
+  <managed-bean id="__1">
+    <managed-bean-name id="__4">ManagedBean</managed-bean-name>
+    <managed-bean-class id="__3">ManagedBean</managed-bean-class>
+    <managed-bean-scope id="__2">request</managed-bean-scope>
+  </managed-bean>
 </adfc-config>

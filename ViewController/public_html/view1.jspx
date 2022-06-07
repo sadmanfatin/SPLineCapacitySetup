@@ -26,9 +26,8 @@
                                     disabled="#{!bindings.Delete.enabled}"
                                     id="cb2"/>
                   <af:spacer width="20" height="10" id="s1"/>
-                  <af:commandButton actionListener="#{bindings.Commit.execute}"
-                                    text="Commit"
-                                    disabled="#{!bindings.Commit.enabled}"
+                  <af:commandButton actionListener="#{ManagedBean.save}"
+                                    text="Save"
                                     id="cb3"/>
                 </af:panelGroupLayout>
                 <af:table value="#{bindings.SpLineCapacityHVO1.collectionModel}"
