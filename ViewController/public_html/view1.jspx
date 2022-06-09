@@ -13,103 +13,124 @@
             <af:panelGroupLayout layout="scroll"
                                  xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
                                  id="pgl1">
-              <af:panelGroupLayout id="pgl3">
-                <af:panelGroupLayout id="pgl4"
-                                     inlineStyle="width:638px; height:47px;">
-                  <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
-                                    text="CreateInsert"
-                                    disabled="#{!bindings.CreateInsert.enabled}"
-                                    id="cb1"/>
-                  <af:spacer width="20" height="10" id="s2"/>
-                  <af:commandButton actionListener="#{bindings.Delete.execute}"
-                                    text="Delete"
-                                    disabled="#{!bindings.Delete.enabled}"
-                                    id="cb2"/>
-                  <af:spacer width="20" height="10" id="s1"/>
-                  <af:commandButton actionListener="#{ManagedBean.save}"
-                                    text="Save"
-                                    id="cb3"/>
+              <af:panelGroupLayout id="pgl3" layout="horizontal">
+                <af:panelGroupLayout id="pgl5" styleClass="AFStretchWidth">
+                  <af:panelHeader text="No Of Lines" id="ph2"
+                                  styleClass="AFStretchWidth">
+                    <f:facet name="context"/>
+                    <f:facet name="menuBar"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="legend"/>
+                    <f:facet name="info"/>
+                    <af:panelGroupLayout id="pgl4"
+                                         inlineStyle="width:638px; height:47.0px;">
+                      <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                        text="Add"
+                                        disabled="#{!bindings.CreateInsert.enabled}"
+                                        id="cb1"/>
+                      <af:spacer width="20" height="10" id="s2"/>
+                      <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                        text="Delete"
+                                        disabled="#{!bindings.Delete.enabled}"
+                                        id="cb2"/>
+                      <af:spacer width="20" height="10" id="s1"/>
+                      <af:commandButton actionListener="#{ManagedBean.save}"
+                                        text="Save" id="cb3"/>
+                    </af:panelGroupLayout>
+                    <af:table value="#{bindings.SpLineCapacityHVO1.collectionModel}"
+                              var="row"
+                              rows="#{bindings.SpLineCapacityHVO1.rangeSize}"
+                              emptyText="#{bindings.SpLineCapacityHVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              fetchSize="#{bindings.SpLineCapacityHVO1.rangeSize}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.SpLineCapacityHVO1.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.SpLineCapacityHVO1.collectionModel.makeCurrent}"
+                              rowSelection="single" id="t1"
+                              partialTriggers="::cb1 ::cb2" autoHeightRows="-1"
+                              inlineStyle="width:500px; height:160.0px;">
+                      <af:column sortProperty="CapacityHId" sortable="false"
+                                 headerText="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.label}"
+                                 id="c2" width="60">
+                        <af:inputText value="#{row.bindings.CapacityHId.inputValue}"
+                                      label="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.label}"
+                                      required="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.mandatory}"
+                                      columns="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.displayWidth}"
+                                      maximumLength="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.precision}"
+                                      shortDesc="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.tooltip}"
+                                      id="it2">
+                          <f:validator binding="#{row.bindings.CapacityHId.validator}"/>
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.format}"/>
+                        </af:inputText>
+                      </af:column>
+                      <af:column sortProperty="OrgId" sortable="false"
+                                 headerText="#{bindings.SpLineCapacityHVO1.hints.OrgId.label}"
+                                 id="c3" width="60">
+                        <af:inputText value="#{row.bindings.OrgId.inputValue}"
+                                      label="#{bindings.SpLineCapacityHVO1.hints.OrgId.label}"
+                                      required="#{bindings.SpLineCapacityHVO1.hints.OrgId.mandatory}"
+                                      columns="#{bindings.SpLineCapacityHVO1.hints.OrgId.displayWidth}"
+                                      maximumLength="#{bindings.SpLineCapacityHVO1.hints.OrgId.precision}"
+                                      shortDesc="#{bindings.SpLineCapacityHVO1.hints.OrgId.tooltip}"
+                                      id="it4">
+                          <f:validator binding="#{row.bindings.OrgId.validator}"/>
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.SpLineCapacityHVO1.hints.OrgId.format}"/>
+                        </af:inputText>
+                      </af:column>
+                      <af:column sortProperty="NoOfLine" sortable="false"
+                                 headerText="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.label}"
+                                 id="c1" width="60">
+                        <af:inputText value="#{row.bindings.NoOfLine.inputValue}"
+                                      label="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.label}"
+                                      required="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.mandatory}"
+                                      columns="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.displayWidth}"
+                                      maximumLength="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.precision}"
+                                      shortDesc="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.tooltip}"
+                                      id="it3">
+                          <f:validator binding="#{row.bindings.NoOfLine.validator}"/>
+                          <af:convertNumber groupingUsed="false"
+                                            pattern="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.format}"/>
+                        </af:inputText>
+                      </af:column>
+                      <af:column sortProperty="EffStartDate" sortable="false"
+                                 headerText="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.label}"
+                                 id="c4">
+                        <af:inputDate value="#{row.bindings.EffStartDate.inputValue}"
+                                      label="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.label}"
+                                      required="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.mandatory}"
+                                      shortDesc="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.tooltip}"
+                                      id="id1">
+                          <f:validator binding="#{row.bindings.EffStartDate.validator}"/>
+                          <af:convertDateTime pattern="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.format}"/>
+                        </af:inputDate>
+                      </af:column>
+                      <af:column sortProperty="EffEndDate" sortable="false"
+                                 headerText="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.label}"
+                                 id="c5">
+                        <af:inputDate value="#{row.bindings.EffEndDate.inputValue}"
+                                      label="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.label}"
+                                      required="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.mandatory}"
+                                      shortDesc="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.tooltip}"
+                                      id="id2">
+                          <f:validator binding="#{row.bindings.EffEndDate.validator}"/>
+                          <af:convertDateTime pattern="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.format}"/>
+                        </af:inputDate>
+                      </af:column>
+                    </af:table>
+                  </af:panelHeader>
                 </af:panelGroupLayout>
-                <af:table value="#{bindings.SpLineCapacityHVO1.collectionModel}"
-                          var="row"
-                          rows="#{bindings.SpLineCapacityHVO1.rangeSize}"
-                          emptyText="#{bindings.SpLineCapacityHVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
-                          fetchSize="#{bindings.SpLineCapacityHVO1.rangeSize}"
-                          rowBandingInterval="0"
-                          selectedRowKeys="#{bindings.SpLineCapacityHVO1.collectionModel.selectedRow}"
-                          selectionListener="#{bindings.SpLineCapacityHVO1.collectionModel.makeCurrent}"
-                          rowSelection="single" id="t1"
-                          partialTriggers="::cb1 ::cb2" width="686">
-                  <af:column sortProperty="CapacityHId" sortable="false"
-                             headerText="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.label}"
-                             id="c2">
-                    <af:inputText value="#{row.bindings.CapacityHId.inputValue}"
-                                  label="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.label}"
-                                  required="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.mandatory}"
-                                  columns="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.displayWidth}"
-                                  maximumLength="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.precision}"
-                                  shortDesc="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.tooltip}"
-                                  id="it2">
-                      <f:validator binding="#{row.bindings.CapacityHId.validator}"/>
-                      <af:convertNumber groupingUsed="false"
-                                        pattern="#{bindings.SpLineCapacityHVO1.hints.CapacityHId.format}"/>
-                    </af:inputText>
-                  </af:column>
-                  <af:column sortProperty="OrgId" sortable="false"
-                             headerText="#{bindings.SpLineCapacityHVO1.hints.OrgId.label}"
-                             id="c3">
-                    <af:inputText value="#{row.bindings.OrgId.inputValue}"
-                                  label="#{bindings.SpLineCapacityHVO1.hints.OrgId.label}"
-                                  required="#{bindings.SpLineCapacityHVO1.hints.OrgId.mandatory}"
-                                  columns="#{bindings.SpLineCapacityHVO1.hints.OrgId.displayWidth}"
-                                  maximumLength="#{bindings.SpLineCapacityHVO1.hints.OrgId.precision}"
-                                  shortDesc="#{bindings.SpLineCapacityHVO1.hints.OrgId.tooltip}"
-                                  id="it4">
-                      <f:validator binding="#{row.bindings.OrgId.validator}"/>
-                      <af:convertNumber groupingUsed="false"
-                                        pattern="#{bindings.SpLineCapacityHVO1.hints.OrgId.format}"/>
-                    </af:inputText>
-                  </af:column>
-                  <af:column sortProperty="NoOfLine" sortable="false"
-                             headerText="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.label}"
-                             id="c1">
-                    <af:inputText value="#{row.bindings.NoOfLine.inputValue}"
-                                  label="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.label}"
-                                  required="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.mandatory}"
-                                  columns="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.displayWidth}"
-                                  maximumLength="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.precision}"
-                                  shortDesc="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.tooltip}"
-                                  id="it3">
-                      <f:validator binding="#{row.bindings.NoOfLine.validator}"/>
-                      <af:convertNumber groupingUsed="false"
-                                        pattern="#{bindings.SpLineCapacityHVO1.hints.NoOfLine.format}"/>
-                    </af:inputText>
-                  </af:column>
-                  <af:column sortProperty="EffStartDate" sortable="false"
-                             headerText="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.label}"
-                             id="c4">
-                    <af:inputDate value="#{row.bindings.EffStartDate.inputValue}"
-                                  label="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.label}"
-                                  required="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.mandatory}"
-                                  shortDesc="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.tooltip}"
-                                  id="id1">
-                      <f:validator binding="#{row.bindings.EffStartDate.validator}"/>
-                      <af:convertDateTime pattern="#{bindings.SpLineCapacityHVO1.hints.EffStartDate.format}"/>
-                    </af:inputDate>
-                  </af:column>
-                  <af:column sortProperty="EffEndDate" sortable="false"
-                             headerText="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.label}"
-                             id="c5">
-                    <af:inputDate value="#{row.bindings.EffEndDate.inputValue}"
-                                  label="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.label}"
-                                  required="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.mandatory}"
-                                  shortDesc="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.tooltip}"
-                                  id="id2">
-                      <f:validator binding="#{row.bindings.EffEndDate.validator}"/>
-                      <af:convertDateTime pattern="#{bindings.SpLineCapacityHVO1.hints.EffEndDate.format}"/>
-                    </af:inputDate>
-                  </af:column>
-                </af:table>
+                <af:panelGroupLayout id="pgl6"
+                                     styleClass="AFStretchWidth">
+                  <af:panelHeader text="Update Working Hour of Line" id="ph3"
+                                  styleClass="AFStretchWidth">
+                    <f:facet name="context"/>
+                    <f:facet name="menuBar"/>
+                    <f:facet name="toolbar"/>
+                    <f:facet name="legend"/>
+                    <f:facet name="info"/>
+                  </af:panelHeader>
+                </af:panelGroupLayout>
               </af:panelGroupLayout>
             </af:panelGroupLayout>
             <!-- id="af_one_column_stretched"   -->
@@ -122,7 +143,7 @@
                               id="ph1" styleClass="customLayoutStyle">
                 <f:facet name="menuBar">
                   <af:inputText value="#{bindings.DefaultWorkingHour.inputValue}"
-                                label="Default Working Hour for line"
+                                label="Default Working Hour for lines"
                                 required="#{bindings.DefaultWorkingHour.hints.mandatory}"
                                 columns="#{bindings.DefaultWorkingHour.hints.displayWidth}"
                                 maximumLength="#{bindings.DefaultWorkingHour.hints.precision}"
@@ -133,7 +154,6 @@
                                       pattern="#{bindings.DefaultWorkingHour.format}"/>
                   </af:inputText>
                 </f:facet>
-                <f:facet name="toolbar"/>
                 <af:inputText value="#{bindings.OrgId.inputValue}"
                               required="#{bindings.OrgId.hints.mandatory}"
                               columns="#{bindings.OrgId.hints.displayWidth}"
