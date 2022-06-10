@@ -6,6 +6,9 @@ import javax.faces.context.FacesContext;
 
 import model.service.common.AppModule;
 
+import model.view.MonthSearchVOImpl;
+import model.view.SpLineCapacityHVOImpl;
+
 import oracle.jbo.server.ApplicationModuleImpl;
 import oracle.jbo.server.ViewLinkImpl;
 import oracle.jbo.server.ViewObjectImpl;
@@ -109,5 +112,45 @@ public class AppModuleImpl extends ApplicationModuleImpl implements AppModule {
      */
     public ViewLinkImpl getOrgVO_vs_SpLineDefaultWhVO_VL1() {
         return (ViewLinkImpl)findViewLink("OrgVO_vs_SpLineDefaultWhVO_VL1");
+    }
+
+    /**
+     * Container's getter for MonthSearchVO1.
+     * @return MonthSearchVO1
+     */
+    public MonthSearchVOImpl getMonthSearchVO1() {
+        return (MonthSearchVOImpl)findViewObject("MonthSearchVO1");
+    }
+
+    /**
+     * Container's getter for SpCalendarHVO1.
+     * @return SpCalendarHVO1
+     */
+    public ViewObjectImpl getSpCalendarHVO1() {
+        return (ViewObjectImpl)findViewObject("SpCalendarHVO1");
+    }
+
+    /**
+     * Container's getter for MonthSearchVO_Vs_SpCalendarHVO_VL1.
+     * @return MonthSearchVO_Vs_SpCalendarHVO_VL1
+     */
+    public ViewLinkImpl getMonthSearchVO_Vs_SpCalendarHVO_VL1() {
+        return (ViewLinkImpl)findViewLink("MonthSearchVO_Vs_SpCalendarHVO_VL1");
+    }
+
+    /**
+     * Container's getter for MonthWiseDailyWorkingHourVO1.
+     * @return MonthWiseDailyWorkingHourVO1
+     */
+    public ViewObjectImpl getMonthWiseDailyWorkingHourVO1() {
+        return (ViewObjectImpl)findViewObject("MonthWiseDailyWorkingHourVO1");
+    }
+
+    /**
+     * Container's getter for SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1.
+     * @return SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1
+     */
+    public ViewLinkImpl getSpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1() {
+        return (ViewLinkImpl)findViewLink("SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1");
     }
 }
