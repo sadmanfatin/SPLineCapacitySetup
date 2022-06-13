@@ -1,6 +1,17 @@
 package model.view;
 
+import java.sql.CallableStatement;
+
+import model.service.AppModuleImpl;
+
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCBindingContainer;
+import oracle.adf.model.binding.DCDataControl;
+
+import oracle.jbo.Key;
+import oracle.jbo.Row;
 import oracle.jbo.RowIterator;
+import oracle.jbo.RowSet;
 import oracle.jbo.domain.Number;
 import oracle.jbo.server.AttributeDefImpl;
 import oracle.jbo.server.ViewRowImpl;
@@ -55,9 +66,49 @@ public class MonthSearchVORowImpl extends ViewRowImpl {
             }
         }
         ,
+        MonthSerial {
+            public Object get(MonthSearchVORowImpl obj) {
+                return obj.getMonthSerial();
+            }
+
+            public void put(MonthSearchVORowImpl obj, Object value) {
+                obj.setMonthSerial((Number)value);
+            }
+        }
+        ,
+        CurrentMonth {
+            public Object get(MonthSearchVORowImpl obj) {
+                return obj.getCurrentMonth();
+            }
+
+            public void put(MonthSearchVORowImpl obj, Object value) {
+                obj.setCurrentMonth((String)value);
+            }
+        }
+        ,
         SpCalendarHVO {
             public Object get(MonthSearchVORowImpl obj) {
                 return obj.getSpCalendarHVO();
+            }
+
+            public void put(MonthSearchVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        MonthLOV1 {
+            public Object get(MonthSearchVORowImpl obj) {
+                return obj.getMonthLOV1();
+            }
+
+            public void put(MonthSearchVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        YearLOV1 {
+            public Object get(MonthSearchVORowImpl obj) {
+                return obj.getYearLOV1();
             }
 
             public void put(MonthSearchVORowImpl obj, Object value) {
@@ -91,17 +142,68 @@ public class MonthSearchVORowImpl extends ViewRowImpl {
             return vals;
         }
     }
+
+
     public static final int ORGID = AttributesEnum.OrgId.index();
     public static final int ORGNAME = AttributesEnum.OrgName.index();
     public static final int MONTHNAME = AttributesEnum.MonthName.index();
     public static final int YEAR = AttributesEnum.Year.index();
+    public static final int MONTHSERIAL = AttributesEnum.MonthSerial.index();
+    public static final int CURRENTMONTH = AttributesEnum.CurrentMonth.index();
     public static final int SPCALENDARHVO = AttributesEnum.SpCalendarHVO.index();
+    public static final int MONTHLOV1 = AttributesEnum.MonthLOV1.index();
+    public static final int YEARLOV1 = AttributesEnum.YearLOV1.index();
 
     /**
      * This is the default constructor (do not remove).
      */
     public MonthSearchVORowImpl() {
     }
+    
+    
+    AppModuleImpl appM = getAppModuleImpl();
+
+    public AppModuleImpl getAppModuleImpl() {
+        DCBindingContainer bindingContainer =
+            (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
+        //BindingContext bindingContext = BindingContext.getCurrent();
+        DCDataControl dc =
+            bindingContainer.findDataControl("AppModuleDataControl"); // Name of application module in datacontrolBinding.cpx
+        AppModuleImpl appM = (AppModuleImpl)dc.getDataProvider();
+        return appM;
+    }
+
+    public void setCurrentMonthFromMonthList() {
+       //   System.out.println("----------------- setCurrentMonthFromMonthList() -----------");
+           SpCalendarHVORowImpl newMonthListVoRow ;
+    
+       if(this.getSpCalendarHVO() == null) {
+           
+       //    System.out.println("---------------------------    this.getSpCalendarHVO() == null  -------------------------");  
+           newMonthListVoRow = (SpCalendarHVORowImpl)appM.getSpCalendarHVO1().createRow();
+           appM.getSpCalendarHVO1().insertRow(newMonthListVoRow);
+           appM.getSpCalendarHVO1().setCurrentRow(newMonthListVoRow);            
+           appM.getDBTransaction().commit();
+       }  
+          
+    }
+
+    public void updateHolidayForHolidayCalendar() {
+      
+       String currentMonthId = this.getSpCalendarHVO().getAttribute("MonthId").toString() ;      
+       String statement = "BEGIN APPS.SP_HC_HOLIDAY_UPDATE(:1); END;";
+       CallableStatement cs =  appM.getDBTransaction().createCallableStatement(statement, 1);
+         
+       try {
+           cs.setInt(1, Integer.parseInt(currentMonthId));
+           cs.execute();
+       }
+       catch(Exception e){
+          e.printStackTrace() ;
+       }    
+      
+    }
+
 
     /**
      * Gets the attribute value for the calculated attribute OrgId.
@@ -135,20 +237,33 @@ public class MonthSearchVORowImpl extends ViewRowImpl {
         setAttributeInternal(ORGNAME, value);
     }
 
+
     /**
      * Gets the attribute value for the calculated attribute MonthName.
      * @return the MonthName
      */
     public String getMonthName() {
         return (String) getAttributeInternal(MONTHNAME);
+   
+        
     }
 
     /**
      * Sets <code>value</code> as the attribute value for the calculated attribute MonthName.
      * @param value value to set the  MonthName
      */
-    public void setMonthName(String value) {
+    public void setMonthName(String value) { 
+        /**
+         *   //row with new value will be current row instead of setting value of current row
+        **/
+        
         setAttributeInternal(MONTHNAME, value);
+        this.getViewObject().setCurrentRow(this.getViewObject().getRow(new Key(new Object[]{value, this.getYear()})));
+        
+        setCurrentMonthFromMonthList();   // this method creates new month row for selected month if not created yet       
+        //        String currentMonthId = this.getSpCalendarHVO().getAttribute("MonthId").toString() ;
+        //        System.out.println("current month id : " +currentMonthId );       
+        updateHolidayForHolidayCalendar( );
     }
 
     /**
@@ -164,14 +279,79 @@ public class MonthSearchVORowImpl extends ViewRowImpl {
      * @param value value to set the  Year
      */
     public void setYear(Number value) {
-        setAttributeInternal(YEAR, value);
+     
+      /**
+       *   //row with new value will be current row instead of setting value of current row
+      **/
+       // setAttributeInternal(YEAR, value);        
+        this.getViewObject().setCurrentRow(this.getViewObject().getRow(new Key(new Object[]{this.getMonthName(), value})));
+               
+        setCurrentMonthFromMonthList();   // this method creates new month row for selected month if not created yet        
+        //        String currentMonthId = this.getSpCalendarHVO().getAttribute("MonthId").toString() ;
+        //        System.out.println("current month id : " +currentMonthId );        
+        updateHolidayForHolidayCalendar( );
+        
+    }
+
+
+    /**
+     * Gets the attribute value for the calculated attribute MonthSerial.
+     * @return the MonthSerial
+     */
+    public Number getMonthSerial() {
+        return (Number) getAttributeInternal(MONTHSERIAL);
     }
 
     /**
-     * Gets the associated <code>RowIterator</code> using master-detail link SpCalendarHVO.
+     * Sets <code>value</code> as the attribute value for the calculated attribute MonthSerial.
+     * @param value value to set the  MonthSerial
      */
-    public RowIterator getSpCalendarHVO() {
-        return (RowIterator)getAttributeInternal(SPCALENDARHVO);
+    public void setMonthSerial(Number value) {
+        setAttributeInternal(MONTHSERIAL, value);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute CurrentMonth.
+     * @return the CurrentMonth
+     */
+    public String getCurrentMonth() {
+        return (String) getAttributeInternal(CURRENTMONTH);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for the calculated attribute CurrentMonth.
+     * @param value value to set the  CurrentMonth
+     */
+    public void setCurrentMonth(String value) {
+        setAttributeInternal(CURRENTMONTH, value);
+    }
+
+    /**
+     * Gets the associated <code>Row</code> using master-detail link SpCalendarHVO.
+     */
+    public Row getSpCalendarHVO() {
+        return (Row)getAttributeInternal(SPCALENDARHVO);
+    }
+
+    /**
+     * Sets the master-detail link SpCalendarHVO between this object and <code>value</code>.
+     */
+    public void setSpCalendarHVO(Row value) {
+        setAttributeInternal(SPCALENDARHVO, value);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> MonthLOV1.
+     */
+    public RowSet getMonthLOV1() {
+        return (RowSet)getAttributeInternal(MONTHLOV1);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> YearLOV1.
+     */
+    public RowSet getYearLOV1() {
+        return (RowSet)getAttributeInternal(YEARLOV1);
     }
 
     /**

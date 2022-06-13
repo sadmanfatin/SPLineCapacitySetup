@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import model.service.common.AppModule;
 
 import model.view.MonthSearchVOImpl;
+import model.view.SpCalendarHVOImpl;
 import model.view.SpLineCapacityHVOImpl;
 
 import oracle.jbo.server.ApplicationModuleImpl;
@@ -152,5 +153,13 @@ public class AppModuleImpl extends ApplicationModuleImpl implements AppModule {
      */
     public ViewLinkImpl getSpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1() {
         return (ViewLinkImpl)findViewLink("SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1");
+    }
+
+    /**
+     * Container's getter for LineNoLOV1.
+     * @return LineNoLOV1
+     */
+    public ViewObjectImpl getLineNoLOV1() {
+        return (ViewObjectImpl)findViewObject("LineNoLOV1");
     }
 }

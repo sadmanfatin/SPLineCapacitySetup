@@ -28,6 +28,18 @@
   <ViewUsage
     Name="SpLineDefaultWhVO1"
     ViewObjectName="model.view.SpLineDefaultWhVO"/>
+  <ViewUsage
+    Name="MonthSearchVO1"
+    ViewObjectName="model.view.MonthSearchVO"/>
+  <ViewUsage
+    Name="SpCalendarHVO1"
+    ViewObjectName="model.view.SpCalendarHVO"/>
+  <ViewUsage
+    Name="MonthWiseDailyWorkingHourVO1"
+    ViewObjectName="model.view.MonthWiseDailyWorkingHourVO"/>
+  <ViewUsage
+    Name="LineNoLOV1"
+    ViewObjectName="model.lov.LineNoLOV"/>
   <ViewLinkUsage
     Name="OrgVO_vs_SpLineCapacityH_VL1"
     ViewLinkObjectName="model.view.OrgVO_vs_SpLineCapacityH_VL"
@@ -46,6 +58,56 @@
     SrcViewUsageName="model.service.AppModule.OrgVO1"
     DstViewUsageName="model.service.AppModule.SpLineDefaultWhVO1"
     Reversed="false"/>
+  <ViewLinkUsage
+    Name="MonthSearchVO_Vs_SpCalendarHVO_VL1"
+    ViewLinkObjectName="model.view.MonthSearchVO_Vs_SpCalendarHVO_VL"
+    SrcViewUsageName="model.service.AppModule.MonthSearchVO1"
+    DstViewUsageName="model.service.AppModule.SpCalendarHVO1"
+    Reversed="false"/>
+  <ViewLinkUsage
+    Name="SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL1"
+    ViewLinkObjectName="model.view.SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL"
+    SrcViewUsageName="model.service.AppModule.SpCalendarHVO1"
+    DstViewUsageName="model.service.AppModule.MonthWiseDailyWorkingHourVO1"
+    Reversed="false"/>
+  <ClientInterface>
+    <Method
+      Name="setSessionValues">
+      <Return
+        Type="void"/>
+      <Parameter
+        Name="orgId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="userId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="respId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="respApplId"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+  <ClientInterface>
+    <Method
+      Name="setSessionValues">
+      <Return
+        Type="void"/>
+      <Parameter
+        Name="orgId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="userId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="respId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="respApplId"
+        Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
   <ClientInterface>
     <Method
       Name="setSessionValues">

@@ -23,6 +23,7 @@
     <DesignTime>
       <Attr Name="_finderName" Value="MonthSearchVO"/>
       <Attr Name="_isUpdateable" Value="true"/>
+      <Attr Name="_minCardinality" Value="1"/>
     </DesignTime>
     <AttrArray Name="Attributes">
       <Item Value="model.view.MonthSearchVO.OrgId"/>
@@ -32,7 +33,7 @@
   </ViewLinkDefEnd>
   <ViewLinkDefEnd
     Name="SpCalendarHVO"
-    Cardinality="-1"
+    Cardinality="1"
     Owner="model.view.SpCalendarHVO">
     <DesignTime>
       <Attr Name="_finderName" Value="SpCalendarHVO"/>

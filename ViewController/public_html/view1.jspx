@@ -4,7 +4,7 @@
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
   <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-  <f:view>
+  <f:view beforePhase="#{ManagedBean.onPageLoad}">
     <af:document id="d1">
       <af:messages id="m1"/>
       <af:form id="f1">
@@ -13,15 +13,16 @@
             <af:panelGroupLayout layout="scroll"
                                  xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
                                  id="pgl1">
-              <af:panelGroupLayout id="pgl3" layout="horizontal">
-                <af:panelGroupLayout id="pgl5" styleClass="AFStretchWidth">
-                  <af:panelHeader text="No Of Lines" id="ph2"
-                                  styleClass="AFStretchWidth">
-                    <f:facet name="context"/>
-                    <f:facet name="menuBar"/>
-                    <f:facet name="toolbar"/>
-                    <f:facet name="legend"/>
-                    <f:facet name="info"/>
+              <af:panelGroupLayout id="pgl3" layout="horizontal"
+                                   inlineStyle="padding:20.0px;">
+                <af:panelHeader text="No Of Lines" id="ph2"
+                                styleClass="AFStretchWidth">
+                  <f:facet name="context"/>
+                  <f:facet name="menuBar"/>
+                  <f:facet name="toolbar"/>
+                  <f:facet name="legend"/>
+                  <f:facet name="info"/>
+                  <af:panelGroupLayout id="pgl5" styleClass="AFStretchWidth">
                     <af:panelGroupLayout id="pgl4"
                                          inlineStyle="width:638px; height:47.0px;">
                       <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
@@ -118,20 +119,701 @@
                         </af:inputDate>
                       </af:column>
                     </af:table>
-                  </af:panelHeader>
-                </af:panelGroupLayout>
-                <af:panelGroupLayout id="pgl6"
-                                     styleClass="AFStretchWidth">
-                  <af:panelHeader text="Update Working Hour of Line" id="ph3"
-                                  styleClass="AFStretchWidth">
-                    <f:facet name="context"/>
-                    <f:facet name="menuBar"/>
-                    <f:facet name="toolbar"/>
-                    <f:facet name="legend"/>
-                    <f:facet name="info"/>
-                  </af:panelHeader>
-                </af:panelGroupLayout>
+                  </af:panelGroupLayout>
+                </af:panelHeader>
+                <af:spacer width="20" height="10" id="s4"/>
+                <af:panelHeader text="Update Working Hour of Line" id="ph3"
+                                styleClass="AFStretchWidth">
+                  <f:facet name="context"/>
+                  <f:facet name="menuBar"/>
+                  <f:facet name="toolbar"/>
+                  <f:facet name="legend"/>
+                  <f:facet name="info"/>
+                  <af:panelGroupLayout id="pgl6" styleClass="AFStretchWidth"
+                                       layout="horizontal" valign="top">
+                    <af:panelFormLayout id="pfl2" rows="5" maxColumns="3">
+                      <af:inputText label="Working Hour " id="it42"
+                                    binding="#{ManagedBean.updatingWh}"/>
+                      <af:inputDate label="Start Date" id="id3"
+                                    binding="#{ManagedBean.startDateForUpdatingWh}"/>
+                      <af:inputDate label="End Date" id="id4"
+                                    binding="#{ManagedBean.endDateForUpdatingWh}"/>
+                      <af:selectBooleanCheckbox label="All Lines" id="sbc2"
+                                                binding="#{ManagedBean.selectAllLines}"
+                                                autoSubmit="true"/>
+                      <f:facet name="footer">
+                        <af:group id="g1">
+                          <af:commandButton text="Update line" id="cb6"
+                                            actionListener="#{ManagedBean.updateWorkingHour}"/>
+                        </af:group>
+                      </f:facet>
+                    </af:panelFormLayout>
+                    <af:table value="#{bindings.LineNoLOV1.collectionModel}"
+                              var="row" rows="#{bindings.LineNoLOV1.rangeSize}"
+                              emptyText="#{bindings.LineNoLOV1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                              fetchSize="#{bindings.LineNoLOV1.rangeSize}"
+                              rowBandingInterval="0"
+                              selectedRowKeys="#{bindings.LineNoLOV1.collectionModel.selectedRow}"
+                              selectionListener="#{bindings.LineNoLOV1.collectionModel.makeCurrent}"
+                              rowSelection="single" id="t3" width="96"
+                              autoHeightRows="15">
+                      <af:column headerText="Select"
+                                 id="c44" align="center" sortable="false"
+                                 width="30">
+                        <af:selectBooleanCheckbox value="#{row.bindings.SelectLine.inputValue}"
+                                                  label="#{row.bindings.SelectLine.label}"
+                                                  shortDesc="#{bindings.LineNoLOV1.hints.SelectLine.tooltip}"
+                                                  id="sbc1"/>
+                      </af:column>
+                      <af:column sortProperty="Line" sortable="false"
+                                 headerText="Line"
+                                 id="c43" width="40" align="center">
+                        <af:inputText value="#{row.bindings.Line.inputValue}"
+                                      label="#{bindings.LineNoLOV1.hints.Line.label}"
+                                      required="#{bindings.LineNoLOV1.hints.Line.mandatory}"
+                                      columns="#{bindings.LineNoLOV1.hints.Line.displayWidth}"
+                                      maximumLength="#{bindings.LineNoLOV1.hints.Line.precision}"
+                                      shortDesc="#{bindings.LineNoLOV1.hints.Line.tooltip}"
+                                      id="it43" readOnly="true">
+                          <f:validator binding="#{row.bindings.Line.validator}"/>
+                        </af:inputText>
+                      </af:column>
+                    </af:table>
+                  </af:panelGroupLayout>
+                </af:panelHeader>
               </af:panelGroupLayout>
+              <af:spacer width="10" height="20" id="s3"/>
+              <af:panelHeader text="Monthly Working Hour View" id="ph4">
+                <f:facet name="context"/>
+                <f:facet name="menuBar"/>
+                <f:facet name="toolbar"/>
+                <f:facet name="legend"/>
+                <f:facet name="info"/>
+                <af:panelGroupLayout id="pgl7" styleClass="AFStretchWidth"
+                                     inlineStyle="margin-top:20.0px;">
+                  <af:panelFormLayout id="pfl1" rows="1" maxColumns="5"
+                                      inlineStyle="border-style:solid; border-width:thin; background-color:rgb(248,248,265); border-color:rgb(198,198,198); margin-bottom:2px; padding:3.0px;">
+                    <af:selectOneChoice value="#{bindings.MonthName.inputValue}"
+                                        label="Month Name"
+                                        required="#{bindings.MonthName.hints.mandatory}"
+                                        shortDesc="#{bindings.MonthName.hints.tooltip}"
+                                        id="soc2" autoSubmit="true">
+                      <f:selectItems value="#{bindings.MonthName.items}"
+                                     id="si2"/>
+                    </af:selectOneChoice>
+                    <af:selectOneChoice value="#{bindings.Year.inputValue}"
+                                        label="Year"
+                                        required="#{bindings.Year.hints.mandatory}"
+                                        shortDesc="#{bindings.Year.hints.tooltip}"
+                                        id="soc1" autoSubmit="true">
+                      <f:selectItems value="#{bindings.Year.items}" id="si1"/>
+                    </af:selectOneChoice>
+                    <af:commandButton actionListener="#{bindings.Previous.execute}"
+                                      text="Previous"
+                                      disabled="#{!bindings.Previous.enabled}"
+                                      partialSubmit="true" id="cb5"
+                                      visible="true"/>
+                    <af:commandButton actionListener="#{bindings.Next.execute}"
+                                      text="Next"
+                                      disabled="#{!bindings.Next.enabled}"
+                                      partialSubmit="true" id="cb4"
+                                      visible="true"/>
+                  </af:panelFormLayout>
+                  <af:table value="#{bindings.MonthWiseDailyWorkingHourVO1.collectionModel}"
+                            var="row"
+                            rows="#{bindings.MonthWiseDailyWorkingHourVO1.rangeSize}"
+                            emptyText="#{bindings.MonthWiseDailyWorkingHourVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            fetchSize="#{bindings.MonthWiseDailyWorkingHourVO1.rangeSize}"
+                            rowBandingInterval="0"
+                            selectedRowKeys="#{bindings.MonthWiseDailyWorkingHourVO1.collectionModel.selectedRow}"
+                            selectionListener="#{bindings.MonthWiseDailyWorkingHourVO1.collectionModel.makeCurrent}" id="t2"
+                            partialTriggers="::cb4 ::cb5 ::soc1 ::soc2"
+                            styleClass="AFStretchWidth">
+                    <af:column sortProperty="OrgId" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.label}"
+                               id="c30" width="60" visible="false">
+                      <af:inputText value="#{row.bindings.OrgId.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.tooltip}"
+                                    id="it23">
+                        <f:validator binding="#{row.bindings.OrgId.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgId.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="OrgName" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.label}"
+                               id="c12" visible="false">
+                      <af:inputText value="#{row.bindings.OrgName.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.OrgName.tooltip}"
+                                    id="it35">
+                        <f:validator binding="#{row.bindings.OrgName.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="MonthId" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.label}"
+                               id="c11" width="60" visible="false">
+                      <af:inputText value="#{row.bindings.MonthId.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.tooltip}"
+                                    id="it24">
+                        <f:validator binding="#{row.bindings.MonthId.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthId.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="MonthName" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.label}"
+                               id="c28" visible="false">
+                      <af:inputText value="#{row.bindings.MonthName.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.MonthName.tooltip}"
+                                    id="it7">
+                        <f:validator binding="#{row.bindings.MonthName.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="Year" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.label}"
+                               id="c23" width="60" visible="false">
+                      <af:inputText value="#{row.bindings.Year.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.tooltip}"
+                                    id="it29">
+                        <f:validator binding="#{row.bindings.Year.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.Year.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="LineNo" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.label}"
+                               id="c20" width="60" align="center">
+                      <af:inputText value="#{row.bindings.LineNo.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.tooltip}"
+                                    id="it17">
+                        <f:validator binding="#{row.bindings.LineNo.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.LineNo.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D1" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.label}"
+                               id="c27" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D1.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.tooltip}"
+                                    id="it6">
+                        <f:validator binding="#{row.bindings.D1.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D1.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D2" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.label}"
+                               id="c8" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D2.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.tooltip}"
+                                    id="it21">
+                        <f:validator binding="#{row.bindings.D2.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D2.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D3" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.label}"
+                               id="c37" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D3.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.tooltip}"
+                                    id="it22">
+                        <f:validator binding="#{row.bindings.D3.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D3.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D4" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.label}"
+                               id="c10" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D4.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.tooltip}"
+                                    id="it8">
+                        <f:validator binding="#{row.bindings.D4.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D4.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D5" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.label}"
+                               id="c32" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D5.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.tooltip}"
+                                    id="it38">
+                        <f:validator binding="#{row.bindings.D5.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D5.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D6" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.label}"
+                               id="c25" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D6.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.tooltip}"
+                                    id="it19">
+                        <f:validator binding="#{row.bindings.D6.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D6.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D7" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.label}"
+                               id="c24" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D7.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.tooltip}"
+                                    id="it36">
+                        <f:validator binding="#{row.bindings.D7.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D7.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D8" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.label}"
+                               id="c14" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D8.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.tooltip}"
+                                    id="it31">
+                        <f:validator binding="#{row.bindings.D8.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D8.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D9" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.label}"
+                               id="c29" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D9.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.tooltip}"
+                                    id="it12">
+                        <f:validator binding="#{row.bindings.D9.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D9.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D10" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.label}"
+                               id="c39" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D10.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.tooltip}"
+                                    id="it18">
+                        <f:validator binding="#{row.bindings.D10.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D10.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D11" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.label}"
+                               id="c7" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D11.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.tooltip}"
+                                    id="it40">
+                        <f:validator binding="#{row.bindings.D11.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D11.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D12" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.label}"
+                               id="c42" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D12.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.tooltip}"
+                                    id="it34">
+                        <f:validator binding="#{row.bindings.D12.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D12.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D13" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.label}"
+                               id="c38" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D13.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.tooltip}"
+                                    id="it30">
+                        <f:validator binding="#{row.bindings.D13.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D13.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D14" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.label}"
+                               id="c9" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D14.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.tooltip}"
+                                    id="it5">
+                        <f:validator binding="#{row.bindings.D14.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D14.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D15" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.label}"
+                               id="c22" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D15.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.tooltip}"
+                                    id="it11">
+                        <f:validator binding="#{row.bindings.D15.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D15.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D16" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.label}"
+                               id="c19" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D16.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.tooltip}"
+                                    id="it9">
+                        <f:validator binding="#{row.bindings.D16.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D16.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D17" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.label}"
+                               id="c33" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D17.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.tooltip}"
+                                    id="it39">
+                        <f:validator binding="#{row.bindings.D17.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D17.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D18" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.label}"
+                               id="c13" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D18.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.tooltip}"
+                                    id="it10">
+                        <f:validator binding="#{row.bindings.D18.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D18.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D19" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.label}"
+                               id="c18" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D19.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.tooltip}"
+                                    id="it33">
+                        <f:validator binding="#{row.bindings.D19.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D19.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D20" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.label}"
+                               id="c40" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D20.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.tooltip}"
+                                    id="it26">
+                        <f:validator binding="#{row.bindings.D20.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D20.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D21" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.label}"
+                               id="c36" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D21.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.tooltip}"
+                                    id="it16">
+                        <f:validator binding="#{row.bindings.D21.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D21.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D22" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.label}"
+                               id="c17" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D22.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.tooltip}"
+                                    id="it13">
+                        <f:validator binding="#{row.bindings.D22.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D22.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D23" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.label}"
+                               id="c6" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D23.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.tooltip}"
+                                    id="it28">
+                        <f:validator binding="#{row.bindings.D23.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D23.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D24" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.label}"
+                               id="c34" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D24.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.tooltip}"
+                                    id="it25">
+                        <f:validator binding="#{row.bindings.D24.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D24.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D25" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.label}"
+                               id="c21" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D25.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.tooltip}"
+                                    id="it20">
+                        <f:validator binding="#{row.bindings.D25.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D25.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D26" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.label}"
+                               id="c26" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D26.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.tooltip}"
+                                    id="it14">
+                        <f:validator binding="#{row.bindings.D26.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D26.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D27" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.label}"
+                               id="c41" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D27.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.tooltip}"
+                                    id="it32">
+                        <f:validator binding="#{row.bindings.D27.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D27.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D28" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.label}"
+                               id="c35" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D28.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.tooltip}"
+                                    id="it15">
+                        <f:validator binding="#{row.bindings.D28.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D28.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D29" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.label}"
+                               id="c15" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D29.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.tooltip}"
+                                    id="it27">
+                        <f:validator binding="#{row.bindings.D29.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D29.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D30" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.label}"
+                               id="c16" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D30.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.tooltip}"
+                                    id="it37">
+                        <f:validator binding="#{row.bindings.D30.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D30.format}"/>
+                      </af:inputText>
+                    </af:column>
+                    <af:column sortProperty="D31" sortable="false"
+                               headerText="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.label}"
+                               id="c31" width="40" align="center"
+                               filterable="false">
+                      <af:inputText value="#{row.bindings.D31.inputValue}"
+                                    label="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.label}"
+                                    required="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.mandatory}"
+                                    columns="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.displayWidth}"
+                                    maximumLength="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.precision}"
+                                    shortDesc="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.tooltip}"
+                                    id="it41">
+                        <f:validator binding="#{row.bindings.D31.validator}"/>
+                        <af:convertNumber groupingUsed="false"
+                                          pattern="#{bindings.MonthWiseDailyWorkingHourVO1.hints.D31.format}"/>
+                      </af:inputText>
+                    </af:column>
+                  </af:table>
+                </af:panelGroupLayout>
+              </af:panelHeader>
             </af:panelGroupLayout>
             <!-- id="af_one_column_stretched"   -->
           </f:facet>

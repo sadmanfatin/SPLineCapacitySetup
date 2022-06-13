@@ -15,6 +15,14 @@
     <iterator Binds="SpLineCapacityHVO1" RangeSize="25"
               DataControl="AppModuleDataControl"
               id="SpLineCapacityHVO1Iterator"/>
+    <iterator Binds="MonthSearchVO1" RangeSize="25"
+              DataControl="AppModuleDataControl" id="MonthSearchVO1Iterator"
+              ChangeEventPolicy="ppr"/>
+    <iterator Binds="MonthWiseDailyWorkingHourVO1" RangeSize="25"
+              DataControl="AppModuleDataControl"
+              id="MonthWiseDailyWorkingHourVO1Iterator"/>
+    <iterator Binds="LineNoLOV1" RangeSize="25"
+              DataControl="AppModuleDataControl" id="LineNoLOV1Iterator"/>
   </executables>
   <bindings>
     <attributeValues IterBinding="OrgVO1Iterator" id="OrgName">
@@ -65,5 +73,76 @@
             RequiresUpdateModel="false" Action="removeCurrentRow"/>
     <action id="Commit" RequiresUpdateModel="true" Action="commitTransaction"
             DataControl="AppModuleDataControl"/>
+    <list IterBinding="MonthSearchVO1Iterator" StaticList="false"
+          Uses="LOV_MonthName" id="MonthName" DTSupportsMRU="false"/>
+    <list IterBinding="MonthSearchVO1Iterator" StaticList="false"
+          Uses="LOV_Year" id="Year" DTSupportsMRU="false"/>
+    <action IterBinding="MonthSearchVO1Iterator" id="Next"
+            RequiresUpdateModel="true" Action="next"/>
+    <action IterBinding="MonthSearchVO1Iterator" id="Previous"
+            RequiresUpdateModel="true" Action="previous"/>
+    <tree IterBinding="MonthWiseDailyWorkingHourVO1Iterator"
+          id="MonthWiseDailyWorkingHourVO1">
+      <nodeDefinition DefName="model.view.MonthWiseDailyWorkingHourVO"
+                      Name="MonthWiseDailyWorkingHourVO10">
+        <AttrNames>
+          <Item Value="OrgId"/>
+          <Item Value="OrgName"/>
+          <Item Value="MonthId"/>
+          <Item Value="MonthName"/>
+          <Item Value="Year"/>
+          <Item Value="LineNo"/>
+          <Item Value="D1"/>
+          <Item Value="D2"/>
+          <Item Value="D3"/>
+          <Item Value="D4"/>
+          <Item Value="D5"/>
+          <Item Value="D6"/>
+          <Item Value="D7"/>
+          <Item Value="D8"/>
+          <Item Value="D9"/>
+          <Item Value="D10"/>
+          <Item Value="D11"/>
+          <Item Value="D12"/>
+          <Item Value="D13"/>
+          <Item Value="D14"/>
+          <Item Value="D15"/>
+          <Item Value="D16"/>
+          <Item Value="D17"/>
+          <Item Value="D18"/>
+          <Item Value="D19"/>
+          <Item Value="D20"/>
+          <Item Value="D21"/>
+          <Item Value="D22"/>
+          <Item Value="D23"/>
+          <Item Value="D24"/>
+          <Item Value="D25"/>
+          <Item Value="D26"/>
+          <Item Value="D27"/>
+          <Item Value="D28"/>
+          <Item Value="D29"/>
+          <Item Value="D30"/>
+          <Item Value="D31"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="LineNoLOV1Iterator" id="LineNoLOV1">
+      <nodeDefinition DefName="model.lov.LineNoLOV" Name="LineNoLOV10">
+        <AttrNames>
+          <Item Value="Line"/>
+          <Item Value="SelectLine" Binds="SelectLine"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="LineNoLOV1Iterator" id="SelectLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="SelectLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="y"/>
+        <Item Value="n"/>
+      </ValueList>
+    </button>
   </bindings>
 </pageDefinition>

@@ -9,9 +9,13 @@
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false">
+  UseGlueCode="false"
+  RowClass="model.view.SpCalendarHVORowImpl"
+  ComponentClass="model.view.SpCalendarHVOImpl">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
     <SchemaBasedProperties>
@@ -20,137 +24,76 @@
     </SchemaBasedProperties>
   </Properties>
   <SQLQuery>
-    <![CDATA[SELECT CH.MONTH_ID, 
-       CH.MONTH_NAME, 
-       CH.YEAR, 
-       CH.ORG_ID, 
-       CH.WEEKLY_HOLIDAY,
-       CH.MONTH_NUMBER,
-       CH.MONTH_SERIAL,
-       extract (day from  last_day(to_date(CH.MONTH_NAME||'/'|| CH.YEAR , 'Month/yyyy' )) ) number_of_days,
+    <![CDATA[SELECT SpCalendarHEO.MONTH_ID, 
+       SpCalendarHEO.MONTH_NAME, 
+       SpCalendarHEO.MONTH_NUMBER, 
+       SpCalendarHEO.MONTH_SERIAL, 
+       SpCalendarHEO.NUMBER_OF_DAYS, 
+       SpCalendarHEO.ORG_ID, 
+       SpCalendarHEO.WEEKLY_HOLIDAY, 
+       SpCalendarHEO.YEAR,      
+       (select count ( *)  from SP_CALENDAR_L CL where CL.month_id  =  SpCalendarHEO.month_id and  CL.WORKING_STATUS = 'Workingday')  Workingday_counT,
        
-       (select count ( *)  from SP_CALENDAR_L CL where CL.month_id  =  CH.month_id and  CL.WORKING_STATUS = 'Workingday')  Workingday_counT,
-       
-       (select count ( *)  from SP_CALENDAR_L CL where CL.month_id  =  CH.month_id and  CL.WORKING_STATUS = 'Holiday')  holiday_counT
-       
-FROM SP_CALENDAR_H CH]]>
+       (select count ( *)  from SP_CALENDAR_L CL where CL.month_id  =  SpCalendarHEO.month_id and  CL.WORKING_STATUS = 'Holiday')  holiday_counT
+FROM SP_CALENDAR_H SpCalendarHEO
+ORDER BY  SpCalendarHEO.MONTH_SERIAL]]>
   </SQLQuery>
+  <EntityUsage
+    Name="SpCalendarHEO"
+    Entity="model.entity.SpCalendarHEO"/>
   <ViewAttribute
     Name="MonthId"
-    IsUpdateable="false"
-    IsPersistent="false"
     IsNotNull="true"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="MONTH_ID"
-    Expression="MONTH_ID"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
+    EntityAttrName="MonthId"
+    EntityUsage="SpCalendarHEO"
+    AliasName="MONTH_ID"/>
   <ViewAttribute
     Name="MonthName"
-    IsUpdateable="false"
-    IsPersistent="false"
+    IsUnique="true"
     PrecisionRule="true"
-    Precision="100"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="MONTH_NAME"
-    Expression="MONTH_NAME"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="100"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="Year"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="YEAR"
-    Expression="YEAR"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="OrgId"
-    IsUpdateable="false"
-    IsPersistent="false"
-    IsNotNull="true"
-    PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="ORG_ID"
-    Expression="ORG_ID"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="WeeklyHoliday"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="100"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="WEEKLY_HOLIDAY"
-    Expression="WEEKLY_HOLIDAY"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="100"/>
-    </DesignTime>
-  </ViewAttribute>
+    EntityAttrName="MonthName"
+    EntityUsage="SpCalendarHEO"
+    AliasName="MONTH_NAME"/>
   <ViewAttribute
     Name="MonthNumber"
-    IsUpdateable="false"
-    IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="MONTH_NUMBER"
-    Expression="MONTH_NUMBER"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
+    EntityAttrName="MonthNumber"
+    EntityUsage="SpCalendarHEO"
+    AliasName="MONTH_NUMBER"/>
   <ViewAttribute
     Name="MonthSerial"
-    IsUpdateable="false"
-    IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="MONTH_SERIAL"
-    Expression="MONTH_SERIAL"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
+    EntityAttrName="MonthSerial"
+    EntityUsage="SpCalendarHEO"
+    AliasName="MONTH_SERIAL"/>
   <ViewAttribute
     Name="NumberOfDays"
-    IsUpdateable="false"
-    IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    AliasName="NUMBER_OF_DAYS"
-    Expression="NUMBER_OF_DAYS"
-    SQLType="NUMERIC">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="39"/>
-    </DesignTime>
-  </ViewAttribute>
+    EntityAttrName="NumberOfDays"
+    EntityUsage="SpCalendarHEO"
+    AliasName="NUMBER_OF_DAYS"/>
+  <ViewAttribute
+    Name="OrgId"
+    IsUnique="true"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="OrgId"
+    EntityUsage="SpCalendarHEO"
+    AliasName="ORG_ID"/>
+  <ViewAttribute
+    Name="WeeklyHoliday"
+    PrecisionRule="true"
+    EntityAttrName="WeeklyHoliday"
+    EntityUsage="SpCalendarHEO"
+    AliasName="WEEKLY_HOLIDAY"/>
+  <ViewAttribute
+    Name="Year"
+    IsUnique="true"
+    PrecisionRule="true"
+    EntityAttrName="Year"
+    EntityUsage="SpCalendarHEO"
+    AliasName="YEAR"/>
   <ViewAttribute
     Name="WorkingdayCount"
     IsUpdateable="false"
@@ -179,11 +122,6 @@ FROM SP_CALENDAR_H CH]]>
       <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>
   </ViewAttribute>
-  <ViewLinkAccessor
-    Name="MonthWiseDailyWorkingHourVO"
-    ViewLink="model.view.SpCalendarHVO_Vs_MonthWiseDailyWorkingHourVO_VL"
-    Type="oracle.jbo.RowIterator"
-    IsUpdateable="false"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="model.ModelBundle"/>
