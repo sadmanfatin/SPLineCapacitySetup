@@ -18,11 +18,12 @@
     <iterator Binds="MonthSearchVO1" RangeSize="25"
               DataControl="AppModuleDataControl" id="MonthSearchVO1Iterator"
               ChangeEventPolicy="ppr"/>
-    <iterator Binds="MonthWiseDailyWorkingHourVO1" RangeSize="25"
-              DataControl="AppModuleDataControl"
-              id="MonthWiseDailyWorkingHourVO1Iterator"/>
     <iterator Binds="LineNoLOV1" RangeSize="25"
               DataControl="AppModuleDataControl" id="LineNoLOV1Iterator"/>
+    <iterator Binds="MonthWiseDailyWorkingHourVO1" RangeSize="25"
+              DataControl="AppModuleDataControl"
+              id="MonthWiseDailyWorkingHourVO1Iterator"
+              ChangeEventPolicy="ppr"/>
   </executables>
   <bindings>
     <attributeValues IterBinding="OrgVO1Iterator" id="OrgName">
@@ -81,6 +82,24 @@
             RequiresUpdateModel="true" Action="next"/>
     <action IterBinding="MonthSearchVO1Iterator" id="Previous"
             RequiresUpdateModel="true" Action="previous"/>
+    <tree IterBinding="LineNoLOV1Iterator" id="LineNoLOV1">
+      <nodeDefinition DefName="model.lov.LineNoLOV" Name="LineNoLOV10">
+        <AttrNames>
+          <Item Value="Line"/>
+          <Item Value="SelectLine" Binds="SelectLine"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="LineNoLOV1Iterator" id="SelectLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="SelectLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="y"/>
+        <Item Value="n"/>
+      </ValueList>
+    </button>
     <tree IterBinding="MonthWiseDailyWorkingHourVO1Iterator"
           id="MonthWiseDailyWorkingHourVO1">
       <nodeDefinition DefName="model.view.MonthWiseDailyWorkingHourVO"
@@ -126,23 +145,5 @@
         </AttrNames>
       </nodeDefinition>
     </tree>
-    <tree IterBinding="LineNoLOV1Iterator" id="LineNoLOV1">
-      <nodeDefinition DefName="model.lov.LineNoLOV" Name="LineNoLOV10">
-        <AttrNames>
-          <Item Value="Line"/>
-          <Item Value="SelectLine" Binds="SelectLine"/>
-        </AttrNames>
-      </nodeDefinition>
-    </tree>
-    <button IterBinding="LineNoLOV1Iterator" id="SelectLine"
-            DTSupportsMRU="false" StaticList="true">
-      <AttrNames>
-        <Item Value="SelectLine"/>
-      </AttrNames>
-      <ValueList>
-        <Item Value="y"/>
-        <Item Value="n"/>
-      </ValueList>
-    </button>
   </bindings>
 </pageDefinition>
